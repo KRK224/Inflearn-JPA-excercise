@@ -31,6 +31,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-devtools'
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+	// Lazy Loading시에 Proxy 객체를 Jackson이 제대로 처리하지 못하는 문제를 해결
+	// 여기서 다 null로 나옴
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate5-jakarta'
+//	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate5' // spring boot 2.0
+
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.projectlombok:lombok'
