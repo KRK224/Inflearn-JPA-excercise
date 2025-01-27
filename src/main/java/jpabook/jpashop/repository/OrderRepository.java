@@ -74,4 +74,15 @@ public class OrderRepository {
                 "join fetch o.delivery d", Order.class).getResultList();
     }
 
+    public List<Order> findAllByItem() {
+        return em.createQuery("select distinct o from Order o " +
+                "join fetch o.member m " +
+                "join fetch o.delivery d " +
+                "join fetch o.orderItems oi " +
+                "join fetch oi.item i", Order.class)
+                // 1:N 관계에서 join fetch를 하면 메모리 상에서 페이징을 하기 때문에 위험하다.
+//                .setFirstResult(1) // 페이징 0부터 시작,
+//                .setMaxResults(100)
+                .getResultList();
+    }
 }
