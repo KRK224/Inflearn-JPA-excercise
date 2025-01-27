@@ -13,6 +13,7 @@ import jpabook.jpashop.repository.OrderSearch;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -44,10 +45,22 @@ public class OrderApiController {
     @GetMapping("/api/v3/orders")
     public List<OrderDto> ordersV3() {
         List<Order> allByString = orderRepository.findAllByItem();
-        for (Order order : allByString) {
-            System.out.println("order ref = " + order + " id = " + order.getId());
-        }
+//        for (Order order : allByString) {
+//            System.out.println("order ref = " + order + " id = " + order.getId());
+//        }
+        return allByString.stream()
+                .map(OrderDto::new)
+                .toList();
+    }
 
+    @GetMapping("/api/v3.1/orders")
+    public List<OrderDto> ordersV3_page(
+            @RequestParam(value = "offset", defaultValue = "0") int offset,
+            @RequestParam(value = "limit", defaultValue = "100") int limit
+    ) {
+        // ToOne 관계는 fetch join으로 가져온다.
+        List<Order> allByString = orderRepository.findAllWithMemberDelivery(offset, limit);
+        // 여기서 1+N 문제가 발생 => batch size로 해결
         return allByString.stream()
                 .map(OrderDto::new)
                 .toList();
