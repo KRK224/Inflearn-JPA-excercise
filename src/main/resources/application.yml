@@ -20,6 +20,8 @@ spring:
         show_sql: true
         format_sql: true
         default_batch_fetch_size: 100
+#    open-in-view: false
+# query command 분리
 
 logging:
   level:
